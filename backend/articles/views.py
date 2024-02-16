@@ -39,6 +39,7 @@ def get_own_articles(request):
                     'title': blog.title,
                     'date_posted': blog.date_posted.strftime('%Y-%m-%d'),
                     'author': blog.author.username,
+                    "authorid": blog.author.id,
                     'slug': blog.slug,
                     'last_updated': blog.last_updated,
                     'content': blog.content,
@@ -49,10 +50,19 @@ def get_own_articles(request):
     else:
         return JsonResponse({"message": "Error getting blogs"}, status=401)
 
-# Create your views here.
-def make_article(request):
-    serializer = BlogSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save(author=request.User)
-        return JsonResponse({"message": "Successfully created Blog"}, status=201)
-    return JsonResponse({"message": "error creating blog"}, status=401)
+def article_delete(request):
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            data = json.loads(request.body)
+            slug = data.get("slug")
+            author_id = data.get("author_id")
+
+            objects_to_delete = Blog.objects.filter(slug=slug, author_id=author_id)
+
+            if (author_id == request.user.id):
+                objects_to_delete.delete()
+                return JsonResponse({"message": "objects deleted"}, status=203)
+            
+            return JsonResponse({"message": "your userID doesnt match the author's id", "author": author_id, "you": request.user.id}, status=401)
+        return JsonResponse({"message": "You are unauthenticated"}, status=401)
+    else: JsonResponse({"message": "Invalid Data"})

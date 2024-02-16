@@ -25,6 +25,28 @@ const page = () => {
     }
   };
 
+  const deleteArticle = async (slug, author) => {
+    try {
+      const data = {
+        slug: slug,
+        author_id: author,
+      };
+      const response = await fetch("http://localhost:8000/article/delete", {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        throw new Error("deleted correctly");
+      }
+      const responseData = await response.json();
+      getUserArticles();
+      console.log("register sucess", responseData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const userLogout = async () => {
     try {
       const response = await fetch("http://localhost:8000/user/logout", {
@@ -93,6 +115,9 @@ const page = () => {
                 <a className="link text-blue-500 underline" href={blog.slug}>
                   Click here to fully open blog
                 </a>
+                <button onClick={() => deleteArticle(blog.slug, blog.authorid)}>
+                  Click to delete
+                </button>
               </li>
             ))}
           </ul>
