@@ -6,6 +6,7 @@ const page = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [blogMade, setBlogMade] = useState(0);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [articles, setArticles] = useState([]);
   const [createBlogGUI, setCreateBlogGUI] = useState(false);
   const [getArticles, setGetArticles] = useState(0);
@@ -58,17 +59,14 @@ const page = () => {
     }
   };
 
-  const [textareaHeight, setTextareaHeight] = useState("auto");
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
   useEffect(() => {
     const textarea = textareaRef.current;
     getUserArticles();
     if (textarea) {
       const resize = () => {
-        textarea.style.height = "auto";
         textarea.style.height = `${textarea.scrollHeight}px`;
       };
+
       textarea.addEventListener("input", resize);
       return () => textarea.removeEventListener("input", resize);
     }
@@ -144,7 +142,7 @@ const page = () => {
         </div>
       </div>
       {createBlogGUI ? (
-        <div className="absolute flex flex-col z-2 bg-white p-4 rounded-xl shadow-xl w-3/4 h-fit justify-between gap-4 m-auto left-0 right-0 top-0 bottom-0 border-gray border-2 max-h-[65vh]">
+        <div className="absolute flex flex-col z-2 bg-white p-4 rounded-xl shadow-xl w-3/4 h-fit justify-between gap-4 m-auto left-0 right-0 top-0 bottom-0 border-gray border-2">
           <div className="flex flex-row justify-between">
             <h1 className="">Create A Blog</h1>
             <button
@@ -164,12 +162,14 @@ const page = () => {
           />
           <textarea
             ref={textareaRef}
-            className="border-2 rounded resize-none"
+            className="border-2 rounded resize-none max-h-[65vh] min-h-[10vh]"
             placeholder="Enter Blog here"
-            style={{ maxHeight: "65vh", height: textareaHeight }}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
               setContent(e.target.value);
-              setTextareaHeight("auto");
+              const textarea = textareaRef.current;
+              if (textarea) {
+                textarea.style.height = `${textarea.scrollHeight}px`;
+              }
             }}
           />
           <button onClick={handleCreateBlog} className="">
