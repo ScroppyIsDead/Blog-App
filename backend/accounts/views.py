@@ -19,8 +19,8 @@ def register(request):
 
                 user = User.objects.create_user(username=username, password=password1, email=email)
 
-                return JsonResponse({"message": "sucessfully created user"})
-            return JsonResponse({"message": "passwords don't match"})
+                return JsonResponse({"message": "Sucessfully created user"})
+            return JsonResponse({"message": "Passwords dont match"}, status=401)
         except json.JSONDecodeError:
             return JsonResponse({"success": False, "message": "Invalid JSON format"})
     else:
@@ -57,7 +57,7 @@ def userlogout(request):
         if request.user.is_authenticated:
             logout(request)
             return JsonResponse({"message": "user logged out succesffully"})
-        return JsonResponse({"message": "user no auth"})
+        return JsonResponse({"message": "user no auth"}, status=401)
     return JsonResponse({"message": "Data type Invalid"}, status=401)
 
 @ensure_csrf_cookie

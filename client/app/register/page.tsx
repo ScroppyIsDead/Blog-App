@@ -4,9 +4,9 @@ import React, { useState } from "react";
 const page = () => {
   const [registerStatus, setregisterStatus] = useState(0);
 
-  const registerUser = async (event) => {
+  const registerUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
+    const formData = new FormData(event.target as HTMLFormElement);
 
     const getCsrfToken = async () => {
       const response = await fetch("http://localhost:8000/user/csrftoken", {
@@ -58,41 +58,41 @@ const page = () => {
 
   return (
     <div className="flex justify-center w-full h-[100vh] text-black">
-      <div className="self-center w-1/2 h-1/2 flex flex-col justify-center">
+      <div className="self-center w-full h-1/2 flex flex-col justify-center">
         <form
-          className="self-center w-full h-fit flex flex-col justify-center"
+          className="self-center w-3/5 h-fit flex flex-col justify-center"
           onSubmit={registerUser}
         >
           <input
-            className="w-1/2 self-center text-center border-2 p-2 m-2"
+            className="w-full self-center text-center border-2 p-2 m-2"
             type="text"
             placeholder="Username"
             id="username"
             name="username"
           />
           <input
-            className="w-1/2 self-center text-center border-2 p-2 m-2"
+            className="w-full self-center text-center border-2 p-2 m-2"
             type="text"
             placeholder="email"
             id="email"
             name="email"
           />
           <input
-            className="w-1/2 self-center text-center border-2 p-2 m-2"
+            className="w-full self-center text-center border-2 p-2 m-2"
             type="password"
             placeholder="password"
             id="password"
             name="password"
           />
           <input
-            className="w-1/2 self-center text-center border-2 p-2 m-2"
+            className="w-full self-center text-center border-2 p-2 m-2"
             type="password"
             placeholder="Confirm Password"
             id="password2"
             name="password2"
           />
           <button
-            className="w-1/2 self-center text-center border-2 bg-orange-500 p-2 m-2"
+            className="w-full self-center text-center border-2 bg-orange-500 p-2 m-2"
             type="submit"
           >
             Submit Form

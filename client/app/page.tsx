@@ -1,9 +1,13 @@
 "use client";
+import { get } from "http";
 import React, { useEffect, useState } from "react";
 
 const page = () => {
   const [usersUsername, setusersUsername] = useState("");
   const [articles, setArticles] = useState([]);
+  const [getArticles, setGetArticles] = useState(0);
+  const [getuserUsername, setGetuserUsername] = useState(0);
+  const [logoutStatus, setlogoutStatus] = useState(0);
 
   const getUserArticles = async () => {
     try {
@@ -15,13 +19,15 @@ const page = () => {
         }
       );
       if (!response.body) {
+        setGetArticles(1);
         throw new Error("coulnt access to bloggg ig");
       }
       const result = await response.json();
-      console.log(result);
+      setGetArticles(2);
       setArticles(result);
     } catch (error) {
       console.error("Error fetching data:", error);
+      setGetArticles(1);
     }
   };
 
@@ -54,10 +60,18 @@ const page = () => {
         credentials: "include",
       });
       if (!response.body) {
+        setlogoutStatus(1);
         throw new Error("coulnt access logout ig");
       }
-      console.log("successfully logged out");
+      if (!response.ok) {
+        setlogoutStatus(1);
+        console.log("error logging logged out");
+      }
+      if (response.ok) {
+        setlogoutStatus(2);
+      }
     } catch (err) {
+      setlogoutStatus(1);
       console.error(err, "hey error logging out");
     }
   };
@@ -69,16 +83,19 @@ const page = () => {
         credentials: "include",
       });
       if (!response.body) {
+        setGetuserUsername(1);
         throw new Error("Error getting user's data");
       }
-
       if (response.ok) {
         const data = await response.json();
-
+        setGetuserUsername(2);
         setusersUsername(data.message);
+        return "hi";
       }
+      setGetuserUsername(1);
     } catch (err) {
       console.log(err, "unable to get user information");
+      setGetuserUsername(1);
     }
   };
 
@@ -91,20 +108,29 @@ const page = () => {
       >
         logout
       </button>
+      {logoutStatus === 1 ? (
+        <p className="text-red-500">couldnt logout correctly/ not logged in</p>
+      ) : logoutStatus === 2 ? (
+        <p className="text-green-500">Loggout out correctly</p>
+      ) : null}
       <button
         className="border-2 self-center border-black m-2 p-2 w-fit"
         onClick={getUsername}
       >
         Click to expose Username
       </button>
-      {usersUsername ? <p>{usersUsername}</p> : null}
+      {getuserUsername === 2 ? (
+        <p>{usersUsername}</p>
+      ) : getuserUsername === 1 ? (
+        <p className="text-red-500">error getting username, did you login?</p>
+      ) : null}
       <button
         className="border-2 self-center border-black m-2 p-2 w-fit"
         onClick={getUserArticles}
       >
         Get Your Articles
       </button>
-      {articles ? (
+      {getArticles === 2 ? (
         <div className="flex w-[100vw] h-fit justify-center">
           <ul className="flex flex-col h-fit w-[60vw] self-center">
             {articles.map((blog, index) => (
@@ -122,6 +148,8 @@ const page = () => {
             ))}
           </ul>
         </div>
+      ) : getArticles === 1 ? (
+        <p className="text-red-500">error getting articles, did you login?</p>
       ) : null}
     </div>
   );
