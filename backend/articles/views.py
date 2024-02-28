@@ -50,6 +50,24 @@ def get_own_articles(request):
     else:
         return JsonResponse({"message": "Error getting blogs"}, status=401)
 
+def get_all_articles(request):
+    if request.method == "GET":
+        blogs = Blog.objects.order_by("date_posted")[:20]
+        blog_data = []
+        for blog in blogs:
+            blog_data.append({                  'title': blog.title,
+                    'date_posted': blog.date_posted.strftime('%Y-%m-%d'),
+                    'author': blog.author.username,
+                    "authorid": blog.author.id,
+                    'slug': blog.slug,
+                    'last_updated': blog.last_updated,
+                    'content': blog.content,
+                    })
+        return JsonResponse(blog_data, safe=False)
+    else:
+        return JsonResponse({"message": "Error getting blogs"}, status=401)
+
+
 def article_delete(request):
     if request.method == "POST":
         if request.user.is_authenticated:

@@ -101,7 +101,12 @@ const page = () => {
 
   return (
     <div className="flex flex-col">
-      <p className=" m-2 p-2 self-center">HomePAge</p>
+      <header>
+        <div className="border-2 border-red-500 shadow-xl text-2xl font-bold py-4 px-2 ">
+          Welcome to Bloggy, create, share, and view tons of blogs made by
+          people just like you.
+        </div>
+      </header>
       <button
         onClick={userLogout}
         className="text-blue-500 m-2 p-2 self-center underline"

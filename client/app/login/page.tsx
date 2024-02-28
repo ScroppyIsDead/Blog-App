@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React, { SyntheticEvent, useState } from "react";
 
 const page = () => {
@@ -56,7 +57,7 @@ const page = () => {
   };
 
   return (
-    <div className="flex justify-center w-full h-[100vh] text-black">
+    <div className="flex justify-center w-full h-[88vh] text-black">
       <div className="self-center w-3/4 h-1/2 flex flex-col justify-center">
         <form
           className="self-center w-full h-fit p-4 flex flex-col justify-center shadow-xl rounded-md"
@@ -82,6 +83,11 @@ const page = () => {
           >
             Login
           </button>
+          <Link href="/register">
+            <p className="text-xs text-center text-blue-500">
+              No Account? Make one here.
+            </p>
+          </Link>
         </form>
 
         {loginStatus === 2 ? (

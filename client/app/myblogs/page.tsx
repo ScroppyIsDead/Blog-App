@@ -162,7 +162,7 @@ const page = () => {
           />
           <textarea
             ref={textareaRef}
-            className="border-2 rounded resize-none max-h-[65vh] min-h-[10vh]"
+            className="border-2 rounded resize-none max-h-[60vh] min-h-[10vh]"
             placeholder="Enter Blog here"
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
               setContent(e.target.value);

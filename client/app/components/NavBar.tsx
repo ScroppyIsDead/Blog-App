@@ -2,6 +2,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
+import navLinks from "./navLinks";
 
 const NavBar = () => {
   const [openMenu, setOpenMenu] = useState(false);
@@ -43,16 +44,12 @@ const NavBar = () => {
           <RxHamburgerMenu className="text-2xl" />
         </button>
         <div className="flex-row hidden md:flex">
-          <ul className="p-4">
-            <Link href="/login" className="p-4">
-              Login
-            </Link>
-            <Link href="/myblogs" className="p-4">
-              My Blogs
-            </Link>
-            <Link href="/register" className="p-4">
-              Make Account
-            </Link>
+          <ul className="p-4 flex flex-row">
+            {navLinks.map((link, index) => (
+              <li className="p-4" key={index}>
+                <Link href={link.href}>{link.title}</Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
@@ -65,26 +62,17 @@ const NavBar = () => {
             </button>
           </div>
           <ul className="p-4">
-            <li className="p-2">
-              <a href="/" className="p-4">
-                Home
-              </a>
-            </li>
-            <li className="p-2">
-              <a href="/login" className="p-4">
-                Login
-              </a>
-            </li>
-            <li className="p-2">
-              <a href="/myblogs" className="p-4">
-                My Blogs
-              </a>
-            </li>
-            <li className="p-2">
-              <a href="/account" className="p-4">
-                Account
-              </a>
-            </li>
+            {navLinks.map((link, index) => (
+              <li
+                onClick={() => setOpenMenu(!openMenu)}
+                className="p-2"
+                key={index}
+              >
+                <Link className="p-4" href={link.href}>
+                  {link.title}
+                </Link>
+              </li>
+            ))}
             <li className="p-2">
               <a className="p-4 cursor-pointer" onClick={userLogout}>
                 Logout
