@@ -1,35 +1,19 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import navLinks from "./navLinks";
+import { getUsername, userLogout } from "./functions";
 
 const NavBar = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [logoutStatus, setlogoutStatus] = useState(0);
+  const [getusernameStatus, setGetuserUsername] = useState(0);
+  const [username, setusersUsername] = useState("");
 
-  const userLogout = async () => {
-    try {
-      const response = await fetch("http://localhost:8000/user/logout", {
-        method: "GET",
-        credentials: "include",
-      });
-      if (!response.body) {
-        setlogoutStatus(1);
-        throw new Error("coulnt access logout ig");
-      }
-      if (!response.ok) {
-        setlogoutStatus(1);
-        console.log("error logging logged out");
-      }
-      if (response.ok) {
-        setlogoutStatus(2);
-      }
-    } catch (err) {
-      setlogoutStatus(1);
-      console.error(err, "hey error logging out");
-    }
-  };
+  useEffect(() => {
+    getUsername(setGetuserUsername, setusersUsername);
+  }, []);
 
   return (
     <nav className="shadow-xl z-10 fixed w-full bg-white h-24">
@@ -53,15 +37,19 @@ const NavBar = () => {
           </ul>
         </div>
       </div>
+
       {openMenu ? (
-        <div className="fixed  flex flex-col top-0 bg-slate-100 shadow-md left-0 h-full w-2/3">
+        <div className="fixed flex flex-col top-0 bg-slate-100 shadow-md left-0 h-full w-2/3">
           <div className="flex flex-row justify-between p-4 items-center">
             <p className="text-xl">DropDown</p>
             <button className="text-xl" onClick={() => setOpenMenu(!openMenu)}>
               X
             </button>
           </div>
-          <ul className="p-4">
+          {getusernameStatus === 2 ? (
+            <p className="px-8">Hello {username}</p>
+          ) : null}
+          <ul className="p-2">
             {navLinks.map((link, index) => (
               <li
                 onClick={() => setOpenMenu(!openMenu)}
@@ -74,7 +62,13 @@ const NavBar = () => {
               </li>
             ))}
             <li className="p-2">
-              <a className="p-4 cursor-pointer" onClick={userLogout}>
+              <a
+                className="p-4 cursor-pointer"
+                onClick={() => {
+                  userLogout(setlogoutStatus);
+                  getUsername(setGetuserUsername, setusersUsername);
+                }}
+              >
                 Logout
               </a>
             </li>

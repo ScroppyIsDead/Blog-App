@@ -1,6 +1,11 @@
 "use client";
-import { create } from "domain";
-import React, { use, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { DELETE_ARTICLE } from "../components/urls";
+import {
+  getUserArticles,
+  getUsername,
+  handleCreateBlog,
+} from "../components/functions";
 
 const page = () => {
   const [title, setTitle] = useState("");
@@ -10,18 +15,22 @@ const page = () => {
   const [articles, setArticles] = useState([]);
   const [createBlogGUI, setCreateBlogGUI] = useState(false);
   const [getArticles, setGetArticles] = useState(0);
+  const [deleteGUI, setdeleteGUI] = useState(false);
+  const [deletedBlog, setDeletedBlog] = useState({});
+  const [getusernameStatus, setGetuserUsername] = useState(0);
+  const [usersUsername, setusersUsername] = useState("");
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
 
-  const deleteArticle = async (slug, author) => {
+  const deleteArticle = async () => {
     try {
       const data = {
-        slug: slug,
-        author_id: author,
+        slug: deletedBlog.slug,
+        author_id: deletedBlog.author,
       };
-      const response = await fetch("http://localhost:8000/article/delete", {
+      const response = await fetch(DELETE_ARTICLE, {
         method: "POST",
         credentials: "include",
         body: JSON.stringify(data),
@@ -30,38 +39,27 @@ const page = () => {
         throw new Error("deleted correctly");
       }
       const responseData = await response.json();
-      getUserArticles();
+      getUserArticles(setGetArticles, setArticles);
+      setdeleteGUI(!deleteGUI);
       console.log("register sucess", responseData);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const getUserArticles = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:8000/article/getownarticles",
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
-      if (!response.body) {
-        setGetArticles(1);
-        throw new Error("coulnt access to bloggg ig");
-      }
-      const result = await response.json();
-      setGetArticles(2);
-      setArticles(result);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setGetArticles(1);
-    }
+  const toggleDeleteGUI = async (
+    slug: string,
+    author: string,
+    title: string
+  ) => {
+    setdeleteGUI(!deleteGUI);
+    setDeletedBlog({ slug, author, title });
   };
 
   useEffect(() => {
     const textarea = textareaRef.current;
-    getUserArticles();
+    getUsername(setGetuserUsername, setusersUsername);
+    getUserArticles(setGetArticles, setArticles);
     if (textarea) {
       const resize = () => {
         textarea.style.height = `${textarea.scrollHeight}px`;
@@ -72,58 +70,36 @@ const page = () => {
     }
   }, []);
 
-  const handleCreateBlog = async () => {
-    try {
-      const data = {
-        title: title,
-        content: content,
-      };
-      const response = await fetch("http://localhost:8000/article/create", {
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(data),
-        method: "POST",
-      });
-      if (!response.ok) {
-        console.error("Error logging increating blog");
-        setBlogMade(1);
-      }
-      if (response.ok) {
-        console.log("blog made successfully");
-        setBlogMade(2);
-        getUserArticles();
-        setCreateBlogGUI(false);
-      }
-    } catch (err) {
-      console.error("problem creating blog", err);
-      setBlogMade(1);
-    }
-  };
-
   return (
     <div className="h-fit w-full flex justify-center">
-      <div className="">
-        <h1>Your Blogs:</h1>
+      <div className="flex flex-col">
+        <p className="text-2xl text-center m-4">Welcome {usersUsername}</p>
         <button
-          className="text-yellow-500"
+          className="text-white rounded mb-2 bg-yellow-500 p-2 m-2 "
           onClick={() => setCreateBlogGUI(!createBlogGUI)}
         >
-          Create new Blog
+          Create New Blog
         </button>
         <div>
           <ul>
             {articles.map((blog, index) => (
-              <li key={index}>
-                <h1>Title: {blog.title}</h1>
-                <h2>Author: {blog.author}</h2>
-                <p>Content: {blog.content}</p>
-                <div className="flex flex-row justify-between">
-                  <a className="text-blue-500" href={blog.slug}>
+              <li className="p-2 border-2 flex flex-col" key={index}>
+                <h1 className=" text-center font-bold">{blog.title}</h1>
+                <h2 className="text-xs pb-4 text-center">By {blog.author}</h2>
+
+                <p className="px-8">{blog.content}</p>
+                <p className="text-xs pt-2 text-black text-center">
+                  Date Posted: {blog.date_posted}
+                </p>
+                <div className="flex flex-row justify-around items-center">
+                  <a className="text-center text-blue-500" href={blog.slug}>
                     Click to fully open Blog
                   </a>
                   <button
-                    className="text-red-500"
-                    onClick={() => deleteArticle(blog.slug, blog.authorid)}
+                    className="text-black m-2 bg-red-500 p-2 rounded"
+                    onClick={() =>
+                      toggleDeleteGUI(blog.slug, blog.authorid, blog.title)
+                    }
                   >
                     Click to delete
                   </button>
@@ -141,6 +117,33 @@ const page = () => {
           </ul>
         </div>
       </div>
+      {deleteGUI ? (
+        <div className="fixed flex flex-col z-2 bg-white p-4 rounded-xl shadow-xl w-3/4 h-fit justify-between gap-4 m-auto left-0 right-0 top-0 bottom-0 border-gray border-2">
+          <div className="flex flex-col justify-between">
+            <p className="text-3xl text-red-500 self-center">Warning</p>
+            <p className="p-2 text-center">
+              By clicking delete you will permanetly delete your blog. There is
+              no way to undo this action and it will be gone forever. Click
+              Delete to confirm the deletion of blog
+              <p className="text-red-500">"{deletedBlog.title}"</p>
+            </p>
+            <button
+              onClick={() => {
+                setdeleteGUI(!deleteGUI);
+              }}
+              className="border-2 border-black rounded-3xl p-2 m-2 text-xl"
+            >
+              Nevermind
+            </button>
+            <button
+              onClick={deleteArticle}
+              className="bg-red-500 rounded-3xl p-2 m-2 text-xl"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ) : null}
       {createBlogGUI ? (
         <div className="absolute flex flex-col z-2 bg-white p-4 rounded-xl shadow-xl w-3/4 h-fit justify-between gap-4 m-auto left-0 right-0 top-0 bottom-0 border-gray border-2">
           <div className="flex flex-row justify-between">
@@ -172,7 +175,19 @@ const page = () => {
               }
             }}
           />
-          <button onClick={handleCreateBlog} className="">
+          <button
+            onClick={() =>
+              handleCreateBlog(
+                title,
+                content,
+                setBlogMade,
+                setGetArticles,
+                setArticles,
+                setCreateBlogGUI
+              )
+            }
+            className=" bg-yellow-500 rounded-3xl p-2 m-2"
+          >
             Create Blog
           </button>
           {blogMade === 2 ? (

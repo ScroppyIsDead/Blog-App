@@ -117,7 +117,11 @@ USE_TZ = True
 CORS_ALLOW_CREDENTIALS = True  
 CORS_ALLOWED_ORIGINS = [
     "http://192.168.254.129:3000",
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "http://47.197.173.195:3000",
+    "https://192.168.254.129:3000",
+    "https://localhost:3000",
+    "https://47.197.173.195:3000",
 ]
 
 # Static files (CSS, JavaScript, Images)

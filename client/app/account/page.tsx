@@ -2,10 +2,16 @@ import React from "react";
 
 const page = () => {
   return (
-    <div className="flex flex-col justify-center items-center">
-      <div className="w-3/4 h-fit shadow-xl my-8 p-4 rounded-xl ">
-        <h1 className="text-center text-2xl">Account info</h1>
-        <p></p>
+    <div className="flex flex-col justify-center ">
+      <div className="w-full p-2 h-fit flex flex-col">
+        <p className="text-xl">Account settings</p>
+        <div className="flex flex-row justify-between">
+          <ul>
+            <li>
+              <p>Username: example</p>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   );

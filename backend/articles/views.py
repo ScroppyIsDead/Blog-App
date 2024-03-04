@@ -52,10 +52,11 @@ def get_own_articles(request):
 
 def get_all_articles(request):
     if request.method == "GET":
-        blogs = Blog.objects.order_by("date_posted")[:20]
+        blogs = Blog.objects.order_by("-date_posted")[:20]
         blog_data = []
         for blog in blogs:
-            blog_data.append({                  'title': blog.title,
+            blog_data.append({                  
+                    'title': blog.title,
                     'date_posted': blog.date_posted.strftime('%Y-%m-%d'),
                     'author': blog.author.username,
                     "authorid": blog.author.id,
