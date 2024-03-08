@@ -68,6 +68,23 @@ def get_all_articles(request):
     else:
         return JsonResponse({"message": "Error getting blogs"}, status=401)
 
+def get_article_from_slug(request, slug):
+    if request.method == "GET":
+        try:
+            blog = Blog.objects.get(slug=slug)
+            response_data = {
+                "title": blog.title, 
+                "content": blog.content, 
+                "slug": blog.slug, 
+                "date_posted": blog.date_posted.strftime('%Y-%m-%d'), 
+                "last_updated": blog.last_updated, 
+                "author": blog.author.username,
+                }
+            return JsonResponse(response_data)
+        except Blog.DoesNotExist:
+            return JsonResponse({'error': 'Blog not found'}, status=404)
+    else:
+        return JsonResponse({"message": "Error getting blogs"}, status=401)
 
 def article_delete(request):
     if request.method == "POST":

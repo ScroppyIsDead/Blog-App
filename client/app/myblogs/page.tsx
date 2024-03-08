@@ -84,7 +84,12 @@ const page = () => {
           <ul>
             {articles.map((blog, index) => (
               <li className="p-2 border-2 flex flex-col" key={index}>
-                <h1 className=" text-center font-bold">{blog.title}</h1>
+                <a
+                  href={"browse/" + blog.slug}
+                  className=" text-center font-bold"
+                >
+                  {blog.title}
+                </a>
                 <h2 className="text-xs pb-4 text-center">By {blog.author}</h2>
 
                 <p className="px-8">{blog.content}</p>

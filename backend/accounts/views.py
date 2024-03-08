@@ -52,6 +52,22 @@ def getuserinformation(request):
         else: 
             return JsonResponse({"message": "User is not authenticated"}, status=401)
         
+def getusersemail(request):
+    if request.method == "GET":
+        if request.user.is_authenticated:
+            email = request.user.email
+            parts = email.split("@")
+            firstpart = parts[0]
+            secondpart = parts[1]
+            if len(firstpart) > 4:
+                hiddenfirstpart = firstpart[:4] + "*" * (len(firstpart))
+            else:
+                hiddenfirstpart = "*" * len(firstpart)
+            finalresult = f"{hiddenfirstpart}@{secondpart}"
+            return JsonResponse({"message": finalresult})
+        else: 
+            return JsonResponse({"message": "User is not authenticated"}, status=401)
+        
 def userlogout(request):
     if request.method == "GET":
         if request.user.is_authenticated:

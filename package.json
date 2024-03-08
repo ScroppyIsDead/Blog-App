@@ -1,0 +1,18 @@
+{
+  "name": "blog-app",
+  "version": "1.0.0",
+  "description": "A simple blog application with frontend and backend components.",
+  "scripts": {
+    "start:frontend": "cd client && npm run dev",
+    "start:backend": "cd backend && py .\\manage.py runserver",
+    "testserver": "concurrently \"npm run start:frontend\" \"npm run start:backend\""
+  },
+  "author": "Shawn Savage",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "typescript": "^5.4.2"
+  }
+}

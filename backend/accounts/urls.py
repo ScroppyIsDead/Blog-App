@@ -7,4 +7,5 @@ urlpatterns = [
  path("csrftoken", views.get_csfr_token),
  path("getinfo", views.getuserinformation),
  path("logout", views.userlogout),
+ path("getemail", views.getusersemail)
 ]

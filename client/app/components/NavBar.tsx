@@ -48,6 +48,10 @@ const NavBar = () => {
           </div>
           {getusernameStatus === 2 ? (
             <p className="px-8">Hello {username}</p>
+          ) : getusernameStatus === 1 ? (
+            <a className="px-8" href="/register">
+              Register
+            </a>
           ) : null}
           <ul className="p-2">
             {navLinks.map((link, index) => (

@@ -1,8 +1,10 @@
 import {
   ALL_ARTICLES,
+  ARTICLE_FROM_SLUG,
   CREATE_ARTICLE,
   CSRFTOKEN,
   GET_OWN_ARTICLES,
+  GET_USER_EMAIL,
   GET_USER_INFO,
   USER_LOGIN,
   USER_LOGOUT,
@@ -128,6 +130,22 @@ export const getAllArticles = async (setArticles: any) => {
   }
 };
 
+export const getArticleFromSlug = async (setpageArticle: any, slug: any) => {
+  try {
+    const sluggedURLRequest = ARTICLE_FROM_SLUG + slug;
+    const response = await fetch(sluggedURLRequest, { method: "GET" });
+    if (!response.ok) {
+      console.log(response.body);
+      throw new Error("couldnt get blogs");
+    }
+
+    const result = await response.json();
+    setpageArticle(result);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const loginUser = async (event: any, setLoginStatus: any) => {
   event.preventDefault();
 
@@ -175,5 +193,31 @@ export const loginUser = async (event: any, setLoginStatus: any) => {
   } catch (err) {
     setLoginStatus(1);
     console.error("Error during login:");
+  }
+};
+
+export const getEmail = async (
+  setGetUserEmailStatus: any,
+  setUsersEmail: any
+) => {
+  try {
+    const response = await fetch(GET_USER_EMAIL, {
+      method: "GET",
+      credentials: "include",
+    });
+    if (!response.body) {
+      setGetUserEmailStatus(1);
+      throw new Error("Error getting user's data");
+    }
+    if (response.ok) {
+      const data = await response.json();
+      setGetUserEmailStatus(2);
+      setUsersEmail(data.message);
+      return "hi";
+    }
+    setGetUserEmailStatus(1);
+  } catch (err) {
+    console.log(err, "unable to get user's email information");
+    setGetUserEmailStatus(1);
   }
 };
