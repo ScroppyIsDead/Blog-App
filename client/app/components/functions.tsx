@@ -1,3 +1,4 @@
+import { error } from "console";
 import {
   ALL_ARTICLES,
   ARTICLE_FROM_SLUG,
@@ -6,6 +7,7 @@ import {
   GET_OWN_ARTICLES,
   GET_USER_EMAIL,
   GET_USER_INFO,
+  RANDOM_ARTICLE,
   USER_LOGIN,
   USER_LOGOUT,
 } from "./urls";
@@ -81,6 +83,30 @@ export const getUserArticles = async (
   }
 };
 
+export const getRandomBlog = async (
+  setRandomblog: React.Dispatch<React.SetStateAction<{}>>,
+  setRandomStatus: React.Dispatch<React.SetStateAction<number>>
+) => {
+  try {
+    const response = await fetch(RANDOM_ARTICLE, {
+      method: "GET",
+      credentials: "include",
+    });
+    if (!response.body) {
+      setRandomStatus(1);
+      console.log("error getting random blog", response);
+      throw new Error("couldnt get random blog");
+    }
+    console.log("correctly got blog", response.body);
+    const result = await response.json();
+    setRandomStatus(2);
+    setRandomblog(result);
+  } catch (err) {
+    setRandomStatus(1);
+    console.log(err);
+  }
+};
+
 export const handleCreateBlog = async (
   title: any,
   content: any,
@@ -130,18 +156,25 @@ export const getAllArticles = async (setArticles: any) => {
   }
 };
 
-export const getArticleFromSlug = async (setpageArticle: any, slug: any) => {
+export const getArticleFromSlug = async (
+  setpageArticle: any,
+  slug: any,
+  setArticleStatus: any
+) => {
   try {
     const sluggedURLRequest = ARTICLE_FROM_SLUG + slug;
     const response = await fetch(sluggedURLRequest, { method: "GET" });
     if (!response.ok) {
       console.log(response.body);
+      setArticleStatus(1);
       throw new Error("couldnt get blogs");
     }
 
     const result = await response.json();
     setpageArticle(result);
+    setArticleStatus(2);
   } catch (err) {
+    setArticleStatus(1);
     console.log(err);
   }
 };

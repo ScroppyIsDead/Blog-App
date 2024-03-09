@@ -14,6 +14,10 @@ def register(request):
             password1 = data.get('password1')
             email = data.get('email')
             password2 = data.get('password2')
+            botcheck = data.get("email2")
+
+            if botcheck:
+                return JsonResponse({"message": "Error Creating Account BOT"}, status=400)
 
             if password1 == password2:
 

@@ -3,6 +3,7 @@ export const GET_OWN_ARTICLES = "http://localhost:8000/article/getownarticles";
 export const CREATE_ARTICLE = "http://localhost:8000/article/create";
 export const ALL_ARTICLES = "http://localhost:8000/article/allarticles";
 export const ARTICLE_FROM_SLUG = `http://localhost:8000/article/slugged/`;
+export const RANDOM_ARTICLE = "http://localhost:8000/article/randomarticle";
 
 export const CSRFTOKEN = "http://localhost:8000/user/csrftoken";
 export const USER_REGISTER = "http://localhost:8000/user/register";

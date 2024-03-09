@@ -6,5 +6,6 @@ urlpatterns = [
     path("getownarticles", views.get_own_articles),
     path("delete", views.article_delete),
     path("allarticles", views.get_all_articles),
-    path("slugged/<slug:slug>", views.get_article_from_slug)
+    path("slugged/<slug:slug>", views.get_article_from_slug),
+    path("randomarticle", views.get_random_article,)
 ]

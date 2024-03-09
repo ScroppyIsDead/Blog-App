@@ -1,76 +1,84 @@
 "use client";
-import { get } from "http";
 import React, { useEffect, useState } from "react";
-import {
-  getUserArticles,
-  getUsername,
-  userLogout,
-} from "./components/functions";
+import { getRandomBlog, getUsername } from "./components/functions";
 
 const page = () => {
-  const [usersUsername, setusersUsername] = useState("");
-  const [articles, setArticles] = useState([]);
-  const [getArticles, setGetArticles] = useState(0);
-  const [getuserUsername, setGetuserUsername] = useState(0);
-  const [logoutStatus, setlogoutStatus] = useState(0);
+  const [username, setusersUsername] = useState("");
+  const [getusernameStatus, setGetuserUsername] = useState(0);
+  const [blog, setRandomblog] = useState({});
+  const [randomblogStatus, setRandomStatus] = useState(0);
 
-  //functions and other things are in components/functions
+  const cutoffText = (content, maxLength) => {
+    if (content && content.length > maxLength) {
+      return content.substring(0, maxLength) + "...";
+    } else {
+      return content;
+    }
+  };
 
+  useEffect(() => {
+    getUsername(setGetuserUsername, setusersUsername);
+    getRandomBlog(setRandomblog, setRandomStatus);
+  }, []);
   return (
-    <div className="flex flex-col">
-      <header>
-        <div className="border-2 border-red-500 shadow-xl text-2xl font-bold py-4 px-2 ">
-          Welcome to Bloggy, create, share, and view tons of blogs made by
-          people just like you.
+    <div className="h-screen flex flex-col bg-gray-100 p-4">
+      <div className="flex flex-col items-center m-2">
+        <div className="w-full flex flex-col m-2">
+          {getusernameStatus === 2 ? (
+            <p className="text-lg text-center font-semibold">
+              Welcome {username}
+            </p>
+          ) : getusernameStatus === 1 ? (
+            <a
+              href="/login"
+              className="text-lg self-center text-center font-semibold"
+            >
+              Click here to login
+            </a>
+          ) : null}
         </div>
-      </header>
-      <button
-        onClick={() => userLogout(setlogoutStatus)}
-        className="text-blue-500 m-2 p-2 self-center underline"
-      >
-        logout
-      </button>
-      {logoutStatus === 1 ? (
-        <p className="text-red-500">couldnt logout correctly/ not logged in</p>
-      ) : logoutStatus === 2 ? (
-        <p className="text-green-500">Loggout out correctly</p>
-      ) : null}
-      <button
-        className="border-2 self-center border-black m-2 p-2 w-fit"
-        onClick={() => getUsername(setGetuserUsername, setusersUsername)}
-      >
-        Click to expose Username
-      </button>
-      {getuserUsername === 2 ? (
-        <p>{usersUsername}</p>
-      ) : getuserUsername === 1 ? (
-        <p className="text-red-500">error getting username, did you login?</p>
-      ) : null}
-      <button
-        className="border-2 self-center border-black m-2 p-2 w-fit"
-        onClick={() => getUserArticles(setGetArticles, setArticles)}
-      >
-        Get Your Articles
-      </button>
-      {getArticles === 2 ? (
-        <div className="flex w-[100vw] h-fit justify-center">
-          <ul className="flex flex-col h-fit w-[60vw] self-center">
-            {articles.map((blog, index) => (
-              <li className="m-2 p-2 border-2 border-black" key={index}>
-                <h1>Title: {blog.title}</h1>
-                <h2>Author: {blog.author}</h2>
-                <p>Content: {blog.content}</p>
-                <a className="link text-blue-500 underline" href={blog.slug}>
-                  Click here to fully open blog
-                </a>
-              </li>
-            ))}
-          </ul>
+        <div className="w-3/4 p-4 my-4 mx-16 border-2 rounded shadow-lg bg-white flex flex-col text-center">
+          <a
+            className="font-semibold text-lg text-blue-500"
+            href={"browse/" + blog.slug}
+          >
+            {cutoffText(blog.title, 65)}
+          </a>
+          <p className="italic text-gray-600 text-sm">By {blog.author}</p>
+          <p className="text-gray-700">{cutoffText(blog.content, 300)}</p>
+          <p className="text-gray-500 text-sm">
+            Date Posted: {blog.date_posted}
+          </p>
+          <div className="flex flex-col mt-2">
+            <a
+              className="text-blue-500 hover:text-blue-700 text-sm"
+              href={"browse/" + blog.slug}
+            >
+              Click to fully open Blog
+            </a>
+            <a
+              href="/browse"
+              className="text-blue-500 hover:text-blue-700 text-sm"
+            >
+              Browse more blogs like this
+            </a>
+          </div>
+          <button
+            className="bg-blue-500 text-white px-2 py-1 rounded mt-2"
+            onClick={() => getRandomBlog(setRandomblog, setRandomStatus)}
+          >
+            Refresh post
+          </button>
         </div>
-      ) : getArticles === 1 ? (
-        <p className="text-red-500">error getting articles, did you login?</p>
-      ) : null}
+      </div>
+      <div className="text-center">
+        Sign up today
+        <a className="text-blue-500 hover:text-blue-700" href="register">
+          HERE
+        </a>
+      </div>
     </div>
   );
 };
+
 export default page;

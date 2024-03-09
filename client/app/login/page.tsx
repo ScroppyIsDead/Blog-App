@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import React, { SyntheticEvent, useState } from "react";
 import { CSRFTOKEN, USER_LOGIN } from "../components/urls";
@@ -8,49 +7,61 @@ import { loginUser } from "../components/functions";
 const page = () => {
   const [loginStatus, setLoginStatus] = useState(0);
 
-  const formInputclassname =
-    "w-full self-center text-center border-2 p-2 m-2 rounded";
-
   return (
-    <div className="flex justify-center w-full h-[88vh] text-black">
-      <div className="self-center w-3/4 h-1/2 flex flex-col justify-center">
+    <div className="flex flex-col items-center justify-center h-screen">
+      <div className="w-full max-w-md p-4 bg-white rounded-lg shadow-md">
+        <h1 className="text-3xl font-semibold text-center text-gray-800 mb-6">
+          Login
+        </h1>
+
         <form
-          className="self-center w-full h-fit p-4 flex flex-col justify-center shadow-xl rounded-md"
-          onSubmit={() => loginUser(event, setLoginStatus)}
+          className="space-y-4"
+          onSubmit={(e) => loginUser(e, setLoginStatus)}
         >
-          <p className="text-center text-xl">Login Here</p>
-          <input
-            id="username"
-            className={formInputclassname}
-            type="text"
-            placeholder="Enter Username"
-            name="username"
-          ></input>
-          <input
-            id="password"
-            className={formInputclassname}
-            type="password"
-            name="password"
-            placeholder="Enter Password"
-          />
+          <div>
+            <label className="text-gray-600">Username:</label>
+            <input
+              type="text"
+              name="username"
+              className="w-full p-2 border border-gray-300 rounded mt-1"
+            />
+          </div>
+
+          <div>
+            <label className="text-gray-600">Password:</label>
+            <input
+              type="password"
+              name="password"
+              className="w-full p-2 border border-gray-300 rounded mt-1"
+            />
+          </div>
+
           <button
             type="submit"
-            className="w-full self-center text-center border-2 p-2 m-2 rounded bg-orange-500"
+            className="w-full p-2 bg-blue-500 text-white rounded"
           >
             Login
           </button>
-          <Link href="/register">
-            <p className="text-xs text-center text-blue-500">
-              No Account? Make one here.
-            </p>
-          </Link>
         </form>
 
-        {loginStatus === 2 ? (
-          <p className="text-green-500">Succesfully logged in</p>
-        ) : loginStatus === 1 ? (
-          <p className="text-red-500">Did not log in succesfully</p>
-        ) : null}
+        <div className="flex justify-center items-center mt-4 text-gray-600 text-sm">
+          <p>Don't have an account? </p>
+          <Link href="/register">
+            <p className="text-blue-500 ml-1">Register</p>
+          </Link>
+        </div>
+
+        {loginStatus === 2 && (
+          <p className="mt-4 text-green-500 text-center">
+            Successfully logged in!
+          </p>
+        )}
+
+        {loginStatus === 1 && (
+          <p className="mt-4 text-red-500 text-center">
+            Login failed, please try again.
+          </p>
+        )}
       </div>
     </div>
   );

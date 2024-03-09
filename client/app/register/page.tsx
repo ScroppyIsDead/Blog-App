@@ -27,6 +27,7 @@ const page = () => {
       password1: formData.get("password"),
       email: formData.get("email"),
       password2: formData.get("password"),
+      email2: formData.get("email2"),
     };
 
     console.log(data);
@@ -56,55 +57,71 @@ const page = () => {
       console.error("Error during registration:", err);
     }
   };
-  const inputFormClassname =
-    "w-full self-center text-center border-2 p-2 m-2 rounded";
+
+  const inputStyles = "w-full p-2 border rounded mb-4";
+
   return (
-    <div className="flex justify-center w-full h-[88vh] text-black">
-      <div className="self-center w-3/4 h-1/2 flex flex-col justify-center">
-        <form
-          className="self-center w-full h-fit p-4 flex flex-col justify-center shadow-xl rounded-md"
-          onSubmit={registerUser}
-        >
-          <p className="text-center text-xl">Register Here</p>
+    <div className="h-[85vh] flex justify-center items-center">
+      <div className="bg-gray-100 p-4 rounded-lg shadow-md">
+        <h1 className={"text-2xl font-bold text-center mb-4"}>Register Here</h1>
+
+        <form className={"max-w-md mx-auto"} onSubmit={registerUser}>
           <input
-            className={inputFormClassname}
+            className={inputStyles}
             type="text"
             placeholder="Username"
             id="username"
             name="username"
           />
+
           <input
-            className={inputFormClassname}
+            className={inputStyles}
             type="text"
-            placeholder="email"
+            placeholder="Email"
             id="email"
             name="email"
           />
+
           <input
-            className={inputFormClassname}
+            className=""
+            type="text"
+            placeholder="Confirm Email"
+            id="email2"
+            name="email2"
+          ></input>
+
+          <input
+            className={inputStyles}
             type="password"
-            placeholder="password"
+            placeholder="Password"
             id="password"
             name="password"
           />
+
           <input
-            className={inputFormClassname}
+            className={inputStyles}
             type="password"
             placeholder="Confirm Password"
             id="password2"
             name="password2"
           />
+
           <button
-            className="w-full self-center text-center border-2 rounded bg-orange-500 p-2 m-2"
+            className={"bg-blue-500 text-white p-2 rounded w-full"}
             type="submit"
           >
             Submit Form
           </button>
         </form>
+
         {registerStatus === 2 ? (
-          <p className="text-green-500">Register Success</p>
+          <p className={"text-center text-lg text-green-500"}>
+            Register Success
+          </p>
         ) : registerStatus === 1 ? (
-          <p className="text-red-500">Error while registering, try again</p>
+          <p className={"text-center text-lg text-red-500"}>
+            Error while registering, try again
+          </p>
         ) : null}
       </div>
     </div>

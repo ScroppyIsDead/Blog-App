@@ -71,106 +71,128 @@ const page = () => {
   }, []);
 
   return (
-    <div className="h-fit w-full flex justify-center">
-      <div className="flex flex-col">
-        <p className="text-2xl text-center m-4">Welcome {usersUsername}</p>
+    <div className="flex flex-col items-center px-4 py-8">
+      <p className="text-3xl font-bold text-center mb-4">
+        Welcome {usersUsername}
+      </p>
+
+      <div className="w-full max-w-md">
         <button
-          className="text-white rounded mb-2 bg-yellow-500 p-2 m-2 "
+          className="bg-yellow-500 text-white font-bold py-2 px-4 rounded mb-4 w-full"
           onClick={() => setCreateBlogGUI(!createBlogGUI)}
         >
           Create New Blog
         </button>
-        <div>
-          <ul>
-            {articles.map((blog, index) => (
-              <li className="p-2 border-2 flex flex-col" key={index}>
-                <a
-                  href={"browse/" + blog.slug}
-                  className=" text-center font-bold"
-                >
-                  {blog.title}
-                </a>
-                <h2 className="text-xs pb-4 text-center">By {blog.author}</h2>
 
-                <p className="px-8">{blog.content}</p>
-                <p className="text-xs pt-2 text-black text-center">
-                  Date Posted: {blog.date_posted}
-                </p>
-                <div className="flex flex-row justify-around items-center">
-                  <a className="text-center text-blue-500" href={blog.slug}>
-                    Click to fully open Blog
-                  </a>
-                  <button
-                    className="text-black m-2 bg-red-500 p-2 rounded"
-                    onClick={() =>
-                      toggleDeleteGUI(blog.slug, blog.authorid, blog.title)
-                    }
-                  >
-                    Click to delete
-                  </button>
-                </div>
-              </li>
-            ))}
-            {getArticles === 1 ? (
-              <p>
-                Error Getting Articles, please ensure you are logged it.{" "}
-                <a className="text-blue-500" href="/login">
-                  Click here to login
-                </a>
+        <ul>
+          {articles.map((blog, index) => (
+            <li key={index} className="bg-white p-4 rounded-lg shadow mb-4">
+              <a
+                href={"browse/" + blog.slug}
+                className="text-2xl font-bold block text-center mb-2"
+              >
+                {blog.title}
+              </a>
+
+              <p className="text-gray-600 text-sm text-center mb-4">
+                By {blog.author}
               </p>
-            ) : null}
-          </ul>
-        </div>
+
+              <p className="text-gray-700 text-base">{blog.content}</p>
+
+              <p className="text-gray-500 text-xs text-center mt-4">
+                Date Posted: {blog.date_posted}
+              </p>
+
+              <div className="flex justify-between mt-4">
+                <a
+                  className="text-blue-500 text-sm"
+                  href={"browse/" + blog.slug}
+                >
+                  Click to fully open Blog
+                </a>
+
+                <button
+                  className="bg-red-500 text-white font-bold py-2 px-4 rounded"
+                  onClick={() =>
+                    toggleDeleteGUI(blog.slug, blog.authorid, blog.title)
+                  }
+                >
+                  Delete
+                </button>
+              </div>
+            </li>
+          ))}
+
+          {getArticles === 1 ? (
+            <p className="text-center text-red-500">
+              Error Getting Articles, please ensure you are logged in.
+              <a className="text-blue-500" href="/login">
+                Click here to login
+              </a>
+            </p>
+          ) : null}
+        </ul>
       </div>
+
       {deleteGUI ? (
         <div className="fixed flex flex-col z-2 bg-white p-4 rounded-xl shadow-xl w-3/4 h-fit justify-between gap-4 m-auto left-0 right-0 top-0 bottom-0 border-gray border-2">
           <div className="flex flex-col justify-between">
-            <p className="text-3xl text-red-500 self-center">Warning</p>
-            <p className="p-2 text-center">
-              By clicking delete you will permanetly delete your blog. There is
-              no way to undo this action and it will be gone forever. Click
-              Delete to confirm the deletion of blog
-              <p className="text-red-500">"{deletedBlog.title}"</p>
+            <p className="text-3xl text-red-500 font-bold text-center">
+              Warning
             </p>
-            <button
-              onClick={() => {
-                setdeleteGUI(!deleteGUI);
-              }}
-              className="border-2 border-black rounded-3xl p-2 m-2 text-xl"
-            >
-              Nevermind
-            </button>
-            <button
-              onClick={deleteArticle}
-              className="bg-red-500 rounded-3xl p-2 m-2 text-xl"
-            >
-              Delete
-            </button>
+            <p className="p-2 text-lg text-center">
+              By clicking delete you will permanently delete your blog. There is
+              no way to undo this action and it will be gone forever. Click
+              Delete to confirm deletion of blog
+              <p className="text-red-500 font-semibold">
+                "{deletedBlog.title}"
+              </p>
+            </p>
+
+            <div className="flex justify-between">
+              <button
+                onClick={() => {
+                  setdeleteGUI(!deleteGUI);
+                }}
+                className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-full"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={deleteArticle}
+                className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       ) : null}
+
       {createBlogGUI ? (
         <div className="absolute flex flex-col z-2 bg-white p-4 rounded-xl shadow-xl w-3/4 h-fit justify-between gap-4 m-auto left-0 right-0 top-0 bottom-0 border-gray border-2">
           <div className="flex flex-row justify-between">
-            <h1 className="">Create A Blog</h1>
+            <h1 className="text-2xl font-bold">Create A Blog</h1>
             <button
               onClick={() => {
                 setCreateBlogGUI(!createBlogGUI);
               }}
-              className="text-red-500"
+              className="text-red-500 text-lg font-medium"
             >
               X
             </button>
           </div>
           <input
             onChange={handleTitle}
-            className="border-2 rounded"
+            className="border-2 rounded p-2"
             type="text"
             placeholder="Enter Title here"
           />
           <textarea
             ref={textareaRef}
-            className="border-2 rounded resize-none max-h-[60vh] min-h-[10vh]"
+            className="border-2 rounded resize-none max-h-[60vh] min-h-[10vh] p-2"
             placeholder="Enter Blog here"
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
               setContent(e.target.value);
@@ -191,14 +213,14 @@ const page = () => {
                 setCreateBlogGUI
               )
             }
-            className=" bg-yellow-500 rounded-3xl p-2 m-2"
+            className="bg-yellow-500 rounded-3xl p-2 m-2 text-lg font-medium"
           >
             Create Blog
           </button>
           {blogMade === 2 ? (
-            <p className="">Made blog yay</p>
+            <p className="text-green-500 font-medium">Made blog yay</p>
           ) : blogMade === 1 ? (
-            <p className="">blog failed to make</p>
+            <p className="text-red-500 font-medium">blog failed to make</p>
           ) : null}
         </div>
       ) : null}

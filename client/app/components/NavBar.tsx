@@ -16,58 +16,64 @@ const NavBar = () => {
   }, []);
 
   return (
-    <nav className="shadow-xl z-10 fixed w-full bg-white h-24">
+    <nav className="shadow-xl z-10 fixed w-full bg-gray-100 h-24">
       <div className="flex justify-between items-center h-full px-4 2xl:px-16">
         <div className="md:p-4">
-          <Link href="/">Your Logo</Link>
+          <a
+            href="/"
+            className="text-2xl font-bold hover:bg-gray-300 rounded-xl p-2"
+          >
+            Your Logo
+          </a>
         </div>
         <button
-          className="m-2 md:hidden"
+          className="m-2 md:hidden hover:bg-gray-300 p-2 rounded-full"
           onClick={() => setOpenMenu(!openMenu)}
         >
           <RxHamburgerMenu className="text-2xl" />
         </button>
-        <div className="flex-row hidden md:flex">
-          <ul className="p-4 flex flex-row">
+        <div className="hidden md:flex">
+          <ul className="flex flex-row">
             {navLinks.map((link, index) => (
-              <li className="p-4" key={index}>
-                <Link href={link.href}>{link.title}</Link>
-              </li>
+              <Link href={link.href}>
+                <li
+                  key={index}
+                  className="px-4 py-2 text-gray-600 rounded-full hover:bg-gray-200 hover:text-gray-800"
+                >
+                  {link.title}
+                </li>
+              </Link>
             ))}
           </ul>
         </div>
       </div>
-
       {openMenu ? (
-        <div className="fixed flex flex-col top-0 bg-slate-100 shadow-md left-0 h-full w-2/3">
-          <div className="flex flex-row justify-between p-4 items-center">
-            <p className="text-xl">DropDown</p>
-            <button className="text-xl" onClick={() => setOpenMenu(!openMenu)}>
+        <div className="fixed flex flex-col top-0 bg-white shadow-md left-0 h-full w-2/3 p-4">
+          <div className="flex justify-between items-center mb-2">
+            <p className="text-xl font-bold">Menu</p>
+            <button
+              className="text-xl font-bold"
+              onClick={() => setOpenMenu(!openMenu)}
+            >
               X
             </button>
           </div>
-          {getusernameStatus === 2 ? (
-            <p className="px-8">Hello {username}</p>
-          ) : getusernameStatus === 1 ? (
-            <a className="px-8" href="/register">
-              Register
-            </a>
-          ) : null}
-          <ul className="p-2">
+
+          <ul>
             {navLinks.map((link, index) => (
-              <li
-                onClick={() => setOpenMenu(!openMenu)}
-                className="p-2"
-                key={index}
-              >
-                <Link className="p-4" href={link.href}>
-                  {link.title}
-                </Link>
-              </li>
+              <Link href={link.href}>
+                <li
+                  key={index}
+                  className="px-4 py-2 hover:bg-gray-200"
+                  onClick={() => setOpenMenu(!openMenu)}
+                >
+                  {link.title}{" "}
+                </li>
+              </Link>
             ))}
-            <li className="p-2">
+            <li className="px-4 py-2 hover:bg-gray-200">
               <a
-                className="p-4 cursor-pointer"
+                className="inline-block"
                 onClick={() => {
                   userLogout(setlogoutStatus);
                   getUsername(setGetuserUsername, setusersUsername);

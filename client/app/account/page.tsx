@@ -14,12 +14,13 @@ const page = () => {
   }, []);
 
   return (
-    <div className="flex flex-col justify-center ">
-      <div className="w-full p-2 h-fit flex flex-col">
-        <p className="text-xl">Account settings</p>
-        <div className="flex flex-row justify-between">
-          <ul>
-            <li>
+    <div className="flex flex-col justify-center">
+      <div className="max-w-sm mx-auto p-4 bg-white rounded-lg shadow-md">
+        <h2 className="text-lg font-medium text-gray-800">Account Settings</h2>
+
+        <div className="mt-4">
+          <ul className="text-gray-700">
+            <li className="flex justify-between my-2">
               {getUserUsername === 1 ? (
                 <a href="/login" className="text-blue-500">
                   Click here to login

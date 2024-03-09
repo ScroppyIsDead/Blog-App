@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from . serializers import BlogSerializer
 import json
+import random
 from . models import Blog
 from django.utils.text import slugify
 
@@ -86,6 +87,25 @@ def get_article_from_slug(request, slug):
     else:
         return JsonResponse({"message": "Error getting blogs"}, status=401)
 
+def get_random_article(request):
+    if request.method == "GET":
+        total_blogs = Blog.objects.count()
+        random_index = random.randint(0, total_blogs - 1)
+        random_blog = Blog.objects.all()[random_index]
+
+        response_data = {
+            "title": random_blog.title,
+            "content": random_blog.content,
+            "slug": random_blog.slug,
+            "date_posted": random_blog.date_posted.strftime('%Y-%m-%d'),
+            "last_updated": random_blog.last_updated,
+            "author": random_blog.author.username,
+        }
+        
+        return JsonResponse(response_data)
+    else: 
+        return JsonResponse({"message": "Request method is meant to be \"get\""}, status=401)
+
 def article_delete(request):
     if request.method == "POST":
         if request.user.is_authenticated:
@@ -102,3 +122,4 @@ def article_delete(request):
             return JsonResponse({"message": "your userID doesnt match the author's id", "author": author_id, "you": request.user.id}, status=401)
         return JsonResponse({"message": "You are unauthenticated"}, status=401)
     else: JsonResponse({"message": "Invalid Data"})
+

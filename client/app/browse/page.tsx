@@ -12,21 +12,26 @@ const page = () => {
 
   return (
     <div className="w-full h-fit">
-      <div>
-        <ul>
+      <div className="flex flex-col items-center">
+        <ul className="w-full">
           {articles.map((blog: any, index: number) => (
-            <li className="p-2 border-2 flex flex-col" key={index}>
-              <h1 className=" text-center font-bold">
-                <a href={"browse/" + blog.slug}>{blog.title}</a>
-              </h1>
-              <h2 className="text-xs pb-4 text-center">By {blog.author}</h2>
-              <p className="px-8 ">{blog.content}</p>
-              <p className="text-xs pt-2 text-black text-center">
-                Date Posted: {blog.date_posted}
-              </p>
-              <p className="text-center text-blue-500">
-                <a href={"browse/" + blog.slug}>Click to fully open Blog</a>
-              </p>
+            <li key={index} className="p-4 border-b border-gray-200">
+              <div className="flex flex-col items-center">
+                <h1 className="text-lg font-bold text-center">
+                  <a href={"browse/" + blog.slug}>{blog.title}</a>
+                </h1>
+                <h2 className="text-sm text-gray-500 pb-2">By {blog.author}</h2>
+                <p className="text-sm px-4">{blog.content}</p>
+                <p className="text-xs pt-2 text-gray-400">
+                  Date Posted: {blog.date_posted}
+                </p>
+                <a
+                  href={"browse/" + blog.slug}
+                  className="text-blue-500 text-sm mt-2"
+                >
+                  Click to fully open Blog
+                </a>
+              </div>
             </li>
           ))}
         </ul>
