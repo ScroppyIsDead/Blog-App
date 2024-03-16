@@ -98,7 +98,9 @@ const page = () => {
                 By {blog.author}
               </p>
 
-              <p className="text-gray-700 text-base">{blog.content}</p>
+              {blog.content.split("\n").map((paragraph: any, index: any) => (
+                <p key={index}>{paragraph}</p>
+              ))}
 
               <p className="text-gray-500 text-xs text-center mt-4">
                 Date Posted: {blog.date_posted}

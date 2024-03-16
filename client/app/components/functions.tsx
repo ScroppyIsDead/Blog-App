@@ -79,6 +79,7 @@ export const getUserArticles = async (
     }
     const result = await response.json();
     setGetArticles(2);
+    console.log(result);
     setArticles(result);
   } catch (error) {
     console.error("Error fetching data:", error);

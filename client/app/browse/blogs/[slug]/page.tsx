@@ -23,7 +23,9 @@ const page = ({ params }: { params: { slug: any } }) => {
           <h2 className="text-xs text-center italic md:text-base">
             By {pageArticle.author}
           </h2>
-          <p className="text-center my-4 md:text-lg">{pageArticle.content}</p>
+          {pageArticle.content.split("\n").map((paragraph: any, index: any) => (
+            <p key={index}>{paragraph}</p>
+          ))}
           <p className="italic text-center text-sm md:text-base">
             Time Posted: {pageArticle.date_posted}
           </p>

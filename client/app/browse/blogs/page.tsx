@@ -21,7 +21,9 @@ const page = () => {
                   <a href={"/browse/blogs/" + blog.slug}>{blog.title}</a>
                 </h1>
                 <h2 className="text-sm text-gray-500 pb-2">By {blog.author}</h2>
-                <p className="text-sm px-4">{blog.content}</p>
+                {blog.content.split("\n").map((paragraph: any, index: any) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
                 <p className="text-xs pt-2 text-gray-400">
                   Date Posted: {blog.date_posted}
                 </p>

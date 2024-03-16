@@ -14,8 +14,8 @@ def create_article(request):
         try:
 
             data = json.loads(request.body)
-            title = data.get("title")
-            content = data.get("content")
+            title = data.get("title", "")
+            content = data.get("content", "")
             author = request.user
 
             slug = slugify(title)
