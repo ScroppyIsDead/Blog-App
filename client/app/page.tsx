@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getRandomBlog, getUsername } from "./components/functions";
+import { cutoffText, getRandomBlog, getUsername } from "./components/functions";
 
 const page = () => {
   const [username, setusersUsername] = useState("");
@@ -8,7 +8,7 @@ const page = () => {
   const [blog, setRandomblog] = useState({});
   const [randomblogStatus, setRandomStatus] = useState(0);
 
-  const cutoffText = (content, maxLength) => {
+  const aaasdwa = (content, maxLength) => {
     if (content && content.length > maxLength) {
       return content.substring(0, maxLength) + "...";
     } else {
@@ -37,10 +37,11 @@ const page = () => {
             </a>
           ) : null}
         </div>
+
         <div className="w-3/4 p-4 my-4 mx-16 border-2 rounded shadow-lg bg-white flex flex-col text-center">
           <a
             className="font-semibold text-lg text-blue-500"
-            href={"browse/" + blog.slug}
+            href={"/browse/blogs/" + blog.slug}
           >
             {cutoffText(blog.title, 65)}
           </a>
@@ -52,12 +53,12 @@ const page = () => {
           <div className="flex flex-col mt-2">
             <a
               className="text-blue-500 hover:text-blue-700 text-sm"
-              href={"browse/" + blog.slug}
+              href={"/browse/blogs/" + blog.slug}
             >
               Click to fully open Blog
             </a>
             <a
-              href="/browse"
+              href="/browse/blogs/"
               className="text-blue-500 hover:text-blue-700 text-sm"
             >
               Browse more blogs like this

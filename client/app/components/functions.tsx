@@ -2,9 +2,12 @@ import { error } from "console";
 import {
   ALL_ARTICLES,
   ARTICLE_FROM_SLUG,
+  CHANGE_BIO,
   CREATE_ARTICLE,
   CSRFTOKEN,
+  GET_ALL_USERS,
   GET_OWN_ARTICLES,
+  GET_PROFILE_INFO,
   GET_USER_EMAIL,
   GET_USER_INFO,
   RANDOM_ARTICLE,
@@ -179,6 +182,51 @@ export const getArticleFromSlug = async (
   }
 };
 
+export const getProfileData = async (
+  slug: string,
+  setprofileData: React.Dispatch<React.SetStateAction<{}>>,
+  setProfileStatus: React.Dispatch<React.SetStateAction<number>>
+) => {
+  try {
+    const sluggedURL = GET_PROFILE_INFO + "/" + slug;
+    const response = await fetch(sluggedURL, { method: "GET" });
+    if (!response.body) {
+      console.log("error getting response getting profile data");
+      setProfileStatus(1);
+    }
+    const result = await response.json();
+    setprofileData(result);
+    setProfileStatus(2);
+  } catch (err) {
+    console.log("error getting profile data", err);
+    setProfileStatus(1);
+  }
+};
+
+export const changeBio = async (event: any) => {
+  try {
+    event.preventDefault();
+    const formData = new FormData(event.target as HTMLFormElement);
+    const data = { bio: formData.get("bio") };
+    const response = await fetch(CHANGE_BIO, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+      credentials: "include",
+    });
+    if (!response.ok) {
+      console.log(response);
+      throw new Error("changing bio failed");
+    }
+    const responseData = await response.json();
+    console.log("changed bio", responseData);
+  } catch (err) {
+    console.log("error changing bio", err);
+  }
+};
+
 export const loginUser = async (event: any, setLoginStatus: any) => {
   event.preventDefault();
 
@@ -252,5 +300,37 @@ export const getEmail = async (
   } catch (err) {
     console.log(err, "unable to get user's email information");
     setGetUserEmailStatus(1);
+  }
+};
+
+export const getAllUsers = async (
+  setUsersArray: React.Dispatch<React.SetStateAction<never[]>>,
+  setUserArrayStatus: React.Dispatch<React.SetStateAction<number>>
+) => {
+  try {
+    const response = await fetch(GET_ALL_USERS, {
+      method: "GET",
+      credentials: "include",
+    });
+    if (!response.body) {
+      console.log("error getting users");
+      setUserArrayStatus(1);
+      return "";
+    }
+
+    const result = await response.json();
+    setUsersArray(result);
+    setUserArrayStatus(2);
+  } catch (err) {
+    console.log("error getting all users", err);
+    setUserArrayStatus(1);
+  }
+};
+
+export const cutoffText = (content, maxLength) => {
+  if (content && content.length > maxLength) {
+    return content.substring(0, maxLength) + "...";
+  } else {
+    return content;
   }
 };

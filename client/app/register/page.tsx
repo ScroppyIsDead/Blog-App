@@ -4,6 +4,7 @@ import { CSRFTOKEN, USER_REGISTER } from "../components/urls";
 
 const page = () => {
   const [registerStatus, setregisterStatus] = useState(0);
+  const [registerMessage, setRegisterMessage] = useState("");
 
   const registerUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -26,7 +27,7 @@ const page = () => {
       username: formData.get("username"),
       password1: formData.get("password"),
       email: formData.get("email"),
-      password2: formData.get("password"),
+      password2: formData.get("password2"),
       email2: formData.get("email2"),
     };
 
@@ -43,9 +44,10 @@ const page = () => {
         body: JSON.stringify(data),
         credentials: "include",
       });
-
+      const responseMessage = await response.json();
       if (!response.ok) {
         setregisterStatus(1);
+        setRegisterMessage(responseMessage.message);
         throw new Error("Registration failed");
       }
 
@@ -83,7 +85,7 @@ const page = () => {
           />
 
           <input
-            className=""
+            className="hidden"
             type="text"
             placeholder="Confirm Email"
             id="email2"
@@ -120,7 +122,7 @@ const page = () => {
           </p>
         ) : registerStatus === 1 ? (
           <p className={"text-center text-lg text-red-500"}>
-            Error while registering, try again
+            {registerMessage}
           </p>
         ) : null}
       </div>

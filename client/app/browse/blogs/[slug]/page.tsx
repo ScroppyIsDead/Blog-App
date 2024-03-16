@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getArticleFromSlug } from "../../components/functions";
+import { getArticleFromSlug } from "../../../components/functions";
 
 const page = ({ params }: { params: { slug: any } }) => {
   const [pageArticle, setpageArticle] = useState({});

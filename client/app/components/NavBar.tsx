@@ -71,9 +71,9 @@ const NavBar = () => {
                 </li>
               </Link>
             ))}
-            <li className="px-4 py-2 hover:bg-gray-200">
+            <li className="px-4 py-2 cursor-pointer hover:bg-gray-200">
               <a
-                className="inline-block"
+                className="inline-block cursor-pointer"
                 onClick={() => {
                   userLogout(setlogoutStatus);
                   getUsername(setGetuserUsername, setusersUsername);

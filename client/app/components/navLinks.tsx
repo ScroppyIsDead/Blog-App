@@ -3,7 +3,7 @@ const navLinks = [
   { title: "Login", href: "/login" },
   { title: "Account", href: "/account" },
   { title: "My Blogs", href: "/myblogs" },
-  { title: "Browse Blogs", href: "/browse" },
+  { title: "Browse", href: "/browse" },
 ];
 
 export default navLinks;

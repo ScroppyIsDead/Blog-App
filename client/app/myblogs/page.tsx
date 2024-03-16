@@ -88,7 +88,7 @@ const page = () => {
           {articles.map((blog, index) => (
             <li key={index} className="bg-white p-4 rounded-lg shadow mb-4">
               <a
-                href={"browse/" + blog.slug}
+                href={"/browse/blogs/" + blog.slug}
                 className="text-2xl font-bold block text-center mb-2"
               >
                 {blog.title}
@@ -107,7 +107,7 @@ const page = () => {
               <div className="flex justify-between mt-4">
                 <a
                   className="text-blue-500 text-sm"
-                  href={"browse/" + blog.slug}
+                  href={"/browse/blogs/" + blog.slug}
                 >
                   Click to fully open Blog
                 </a>
