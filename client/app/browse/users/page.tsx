@@ -21,11 +21,7 @@ const page = () => {
               className="flex border-2 rounded border-black h-10 p-6 m-2 flex-row items-center"
               key={index}
             >
-              <Image
-                className="w-10 h-10 rounded-full mx-2 "
-                src={DefaultAvatar}
-                alt="ProfileImage"
-              />
+              <img className="w-10 h-10 rounded-full mx-2 " src={user.avatar} />
               <a
                 className="hover:text-gray-800 p-2 mx-2"
                 href={"/browse/users/" + user.username}

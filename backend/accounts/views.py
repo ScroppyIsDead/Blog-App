@@ -111,7 +111,11 @@ def getallusers(request):
         all_users = []
         for user in users:
             username = user.username
-            all_users.append({"username": username})
+            if user.profile.avatar:
+                avatar = user.profile.avatar.url
+            else: 
+                avatar = "/static/images/DefaultProfile.jpg"
+            all_users.append({"username": username, "avatar": request.build_absolute_uri(user.profile.avatar.url) if user.profile.avatar else "/static/images/DefaultProfile.jpg",                        })
         return JsonResponse(all_users, safe=False)
     else:    
         return JsonResponse({"message": "Data type Invalid"}, status=401)        
@@ -121,15 +125,14 @@ def get_bio_info(request, slug):
             user = User.objects.filter(username=slug).first()
             if user:
                 if user.profile.avatar:
-                    avatar_url = user.profile.avatar.url
+                    avatar = user.profile.avatar.url
                 else: 
-                    avatar_url = "/static/images/DefaultProfile.jpg"
+                    avatar = "/static/images/DefaultProfile.jpg"
                 bio_info = user.profile
                 results = {
                         "bio": bio_info.bio,
                         "username": user.username,
-                        "avatar": avatar_url,
-                        }
+            "avatar": request.build_absolute_uri(user.profile.avatar.url) if user.profile.avatar else "/static/images/DefaultProfile.jpg",                        }
                 return JsonResponse(results)
             return JsonResponse({"message": "no user found"}, status=404)
     return JsonResponse({"message": "invalid method, must be GET"}, status=401)
