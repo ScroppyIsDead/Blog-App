@@ -4,16 +4,8 @@ from django.middleware.csrf import get_token
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from . models import Profile
 from django.contrib.auth.decorators import login_required
 from django.core.files.base import ContentFile
-import base64
-from django.shortcuts import get_object_or_404  
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.permissions import IsAuthenticated  # Optional authentication
-from .serializers import ProfileSerializer
 
 # Create your views here.
 def register(request):
@@ -124,18 +116,25 @@ def get_bio_info(request, slug):
     if request.method == "GET":
             user = User.objects.filter(username=slug).first()
             if user:
-                if user.profile.avatar:
-                    avatar = user.profile.avatar.url
-                else: 
-                    avatar = "/static/images/DefaultProfile.jpg"
                 bio_info = user.profile
                 results = {
                         "bio": bio_info.bio,
                         "username": user.username,
-            "avatar": request.build_absolute_uri(user.profile.avatar.url) if user.profile.avatar else "/static/images/DefaultProfile.jpg",                        }
+                        "avatar": request.build_absolute_uri(user.profile.avatar.url) if user.profile.avatar else "/static/images/DefaultProfile.jpg",}
                 return JsonResponse(results)
             return JsonResponse({"message": "no user found"}, status=404)
     return JsonResponse({"message": "invalid method, must be GET"}, status=401)
+
+@login_required
+def get_own_avatar(request):
+    if request.method == "GET":
+        if request.user:
+            user = request.user
+            results = {"avatar": request.build_absolute_uri(user.profile.avatar.url) if user.profile.avatar else None}
+            return JsonResponse(results)
+        return JsonResponse({"message": "no user found"}, status=404)
+    return JsonResponse({"message": "invalid method, must be GET"}, status=401)
+
 
 def change_bio(request):
     if request.method == "POST":

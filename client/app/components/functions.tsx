@@ -7,6 +7,7 @@ import {
   CSRFTOKEN,
   GET_ALL_USERS,
   GET_OWN_ARTICLES,
+  GET_OWN_AVATAR,
   GET_PROFILE_INFO,
   GET_USER_EMAIL,
   GET_USER_INFO,
@@ -180,6 +181,28 @@ export const getArticleFromSlug = async (
   } catch (err) {
     setArticleStatus(1);
     console.log(err);
+  }
+};
+
+export const getOwnAvatar = async (
+  setAvatarData: React.Dispatch<React.SetStateAction<{}>>,
+  setGetAvatarStatus: React.Dispatch<React.SetStateAction<number>>
+) => {
+  try {
+    const response = await fetch(GET_OWN_AVATAR, {
+      method: "GET",
+      credentials: "include",
+    });
+    if (!response.body) {
+      console.log("error getting response getting profile data");
+      setGetAvatarStatus(1);
+    }
+    const result = await response.json();
+    setAvatarData(result);
+    setGetAvatarStatus(2);
+  } catch (err) {
+    console.log("error getting profile data", err);
+    setGetAvatarStatus(1);
   }
 };
 

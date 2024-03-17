@@ -11,5 +11,6 @@ urlpatterns = [
  path("getallusers", views.getallusers),
  path("getbioinfo/<slug:slug>", views.get_bio_info),
  path("changebio", views.change_bio),
- path("uploadavatar", views.upload_avatar)
+ path("uploadavatar", views.upload_avatar),
+ path("getownavatar", views.get_own_avatar),
 ]

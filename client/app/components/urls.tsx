@@ -15,4 +15,4 @@ export const GET_ALL_USERS = "http://localhost:8000/user/getallusers";
 export const GET_PROFILE_INFO = "http://localhost:8000/user/getbioinfo";
 export const CHANGE_BIO = "http://localhost:8000/user/changebio";
 export const UPLOAD_AVATAR = "http://localhost:8000/user/uploadavatar";
-export const GET_IMAGE_URL = "http://localhost:8000";
+export const GET_OWN_AVATAR = "http://localhost:8000/user/getownavatar";
