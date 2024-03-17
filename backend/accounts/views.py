@@ -139,7 +139,6 @@ def get_own_avatar(request):
 def change_bio(request):
     if request.method == "POST":
         if request.user.is_authenticated:
-            
                 data = json.loads(request.body)
                 new_bio = data.get("bio")
                 request.user.profile.bio = new_bio
