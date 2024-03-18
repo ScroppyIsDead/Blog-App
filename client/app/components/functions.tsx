@@ -3,6 +3,7 @@ import {
   ALL_ARTICLES,
   ARTICLE_FROM_SLUG,
   CHANGE_BIO,
+  CHANGE_EMAIL,
   CREATE_ARTICLE,
   CSRFTOKEN,
   GET_ALL_USERS,
@@ -356,5 +357,32 @@ export const cutoffText = (content, maxLength) => {
     return content.substring(0, maxLength) + "...";
   } else {
     return content;
+  }
+};
+
+export const changeEmail = async (event: any, setChangeEmailStatus: any) => {
+  try {
+    event.preventDefault();
+    const formData = new FormData(event.target as HTMLFormElement);
+
+    const submit = {
+      email: formData.get("email"),
+    };
+
+    const response = await fetch(CHANGE_EMAIL, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify(submit),
+    });
+    if (!response.ok) {
+      console.log("Error response not okay changing email failed");
+      setChangeEmailStatus(1);
+      return;
+    }
+    console.log("email successfully changed");
+    setChangeEmailStatus(2);
+  } catch (err) {
+    console.log("error chaing email", err);
+    setChangeEmailStatus(1);
   }
 };

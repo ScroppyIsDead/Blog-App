@@ -14,11 +14,13 @@ const page = ({ params }: { params: { userslug: any } }) => {
 
   return (
     <div>
-      hiiii
       {getProfileStatus === 2 ? (
         <div>
-          <p>bio: {profileData.bio}</p>
           <p>username: {profileData.username}</p>
+          {profileData.bio.split("\n").map((line, index) => (
+            <p key={index}>{line}</p>
+          ))}
+
           <img src={profileData.avatar} />
         </div>
       ) : getProfileStatus === 1 ? (
