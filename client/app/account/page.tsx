@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   changeBio,
   changeEmail,
+  changePassword,
   getEmail,
   getUsername,
 } from "../components/functions";
@@ -18,6 +19,8 @@ const page = () => {
   const [changeEmailMenu, setchangeEmailMenu] = useState(false);
   const [changeEmailStatus, setChangeEmailStatus] = useState(0);
   const [newBio, setBio] = useState("");
+  const [changePasswordStatus, setChangePasswordStatus] = useState(0);
+  const [changePasswordMenu, setchangePasswordMenu] = useState(false);
   const textAreaRef = useRef(null);
   const MAX_LINE_BREAKS = 7;
 
@@ -120,7 +123,12 @@ const page = () => {
             id="imageinput"
             accept="image/*"
           />
-          <button type="submit">submit image</button>
+          <button
+            className="color-transition p-2 px-4 text-black font-semibold hover:bg-gray-200 rounded-xl text-center "
+            type="submit"
+          >
+            Submit Image
+          </button>
         </form>
 
         <div className="mt-4">
@@ -142,7 +150,15 @@ const page = () => {
                       <CiEdit />
                     </div>
                   </div>
-                  <p>Password: ***********</p>
+                  <div className="flex flex-row items-center justify-between w-full">
+                    <p>Password: ***********</p>
+                    <div
+                      onClick={() => setchangePasswordMenu(true)}
+                      className="text-xl color-transition hover:bg-gray-200 rounded-full p-2 cursor-pointer"
+                    >
+                      <CiEdit />
+                    </div>
+                  </div>
                 </div>
               ) : null}
             </li>
@@ -182,6 +198,42 @@ const page = () => {
             <p className="text-green-500">Changed email correctly</p>
           ) : changeEmailStatus === 1 ? (
             <p className="text-red-500">Error changing email</p>
+          ) : null}
+        </form>
+      </div>
+      <div
+        className={`fixed flex-col p-4 flex top-0 left-0 right-0 bottom-40 m-auto z-10 transition-transform ease-in-out duration-500 w-[75vw] shadow-xl bg-white rounded h-[50vh] ${
+          changePasswordMenu ? "translate-y-24 " : "-translate-y-[75vh]"
+        }`}
+      >
+        <div className="flex flex-row justify-between w-full">
+          <p className="text-xl font-semibold">Change Password</p>
+          <p
+            onClick={() => setchangePasswordMenu(!changePasswordMenu)}
+            className="color-transition m-4 hover:bg-gray-300 p-2 rounded-full hover:text-red-700 text-red-500 cursor-pointer"
+          >
+            X
+          </p>
+        </div>
+
+        <form onSubmit={() => changePassword(event, setChangePasswordStatus)}>
+          <input
+            className="w-full p-2 border border-gray-300 rounded m-2"
+            placeholder="Type your new password here"
+            type="text"
+            id="password"
+            name="password"
+          />
+          <button
+            className="p-2 rounded-xl color-transition hover:bg-gray-300"
+            type="submit"
+          >
+            Submit password
+          </button>
+          {changeEmailStatus === 2 ? (
+            <p className="text-green-500">Changed Password correctly</p>
+          ) : changeEmailStatus === 1 ? (
+            <p className="text-red-500">Error changing password</p>
           ) : null}
         </form>
       </div>

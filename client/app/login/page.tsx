@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import React, { SyntheticEvent, useState } from "react";
 import { CSRFTOKEN, USER_LOGIN } from "../components/urls";
 import { loginUser } from "../components/functions";
@@ -46,9 +45,9 @@ const page = () => {
 
         <div className="flex justify-center items-center mt-4 text-gray-600 text-sm">
           <p>Don't have an account? </p>
-          <Link href="/register">
+          <a href="/register">
             <p className="text-blue-500 ml-1">Register</p>
-          </Link>
+          </a>
         </div>
 
         {loginStatus === 2 && (

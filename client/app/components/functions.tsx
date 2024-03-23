@@ -4,6 +4,7 @@ import {
   ARTICLE_FROM_SLUG,
   CHANGE_BIO,
   CHANGE_EMAIL,
+  CHANGE_PASSWORD,
   CREATE_ARTICLE,
   CSRFTOKEN,
   GET_ALL_USERS,
@@ -384,5 +385,35 @@ export const changeEmail = async (event: any, setChangeEmailStatus: any) => {
   } catch (err) {
     console.log("error chaing email", err);
     setChangeEmailStatus(1);
+  }
+};
+
+export const changePassword = async (
+  event: any,
+  setChangePasswordStatus: any
+) => {
+  try {
+    event.preventDefault();
+    const formData = new FormData(event.target as HTMLFormElement);
+
+    const submit = {
+      password: formData.get("password"),
+    };
+
+    const response = await fetch(CHANGE_PASSWORD, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify(submit),
+    });
+    if (!response.ok) {
+      console.log("Error response not okay changing password failed");
+      setChangePasswordStatus(1);
+      return;
+    }
+    console.log("password successfully changed");
+    setChangePasswordStatus(2);
+  } catch (err) {
+    console.log("error chaing password", err);
+    setChangePasswordStatus(1);
   }
 };

@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import navlinks from "./navLinks";
@@ -24,13 +23,13 @@ const NavBar = () => {
     <nav className="shadow-xl z-10 fixed w-full bg-gray-100 h-24">
       <div className="flex justify-between items-center h-full px-4 2xl:px-16">
         <div className="md:p-4">
-          <Link
+          <a
             onClick={() => setOpenAvatarMenu(false)}
             href="/"
             className="text-2xl font-bold color-transition hover:bg-gray-300 rounded-xl p-2"
           >
             Your Logo
-          </Link>
+          </a>
         </div>
         <button
           className="m-2 md:hidden color-transition hover:bg-gray-300 p-2 rounded-full"
@@ -41,14 +40,14 @@ const NavBar = () => {
         <div className="hidden md:flex">
           <ul className="flex items-center flex-row">
             {navlinks.map((link, index) => (
-              <Link onClick={() => setOpenAvatarMenu(false)} href={link.href}>
+              <a onClick={() => setOpenAvatarMenu(false)} href={link.href}>
                 <li
                   key={index}
                   className="px-4 py-2 text-gray-600 rounded-full color-transition hover:bg-gray-200 hover:text-gray-800"
                 >
                   {link.title}
                 </li>
-              </Link>
+              </a>
             ))}
           </ul>
           <button onClick={() => setOpenAvatarMenu(!openAvatarMenu)}>
@@ -61,17 +60,14 @@ const NavBar = () => {
             <div className="absolute top-full right-0 mr-6 2xl:mr-16 mt-2 w-32 bg-white shadow-md rounded-md overflow-hidden z-50">
               <ul className="px-2 py-1">
                 <li className="py-1 hover:bg-gray-200 color-transition p-2 cursor-pointer rounded">
-                  <Link
-                    onClick={() => setOpenAvatarMenu(false)}
-                    href="/account"
-                  >
+                  <a onClick={() => setOpenAvatarMenu(false)} href="/account">
                     Account
-                  </Link>
+                  </a>
                 </li>
                 <li className="py-1 hover:bg-gray-200 color-transition p-2 cursor-pointer rounded">
-                  <Link onClick={() => setOpenAvatarMenu(false)} href="#">
+                  <a onClick={() => setOpenAvatarMenu(false)} href="#">
                     Settings
-                  </Link>
+                  </a>
                 </li>
 
                 {getusernameStatus === 2 ? (
@@ -86,22 +82,19 @@ const NavBar = () => {
                   </li>
                 ) : (
                   <>
-                    <Link
-                      onClick={() => setOpenAvatarMenu(false)}
-                      href="/login"
-                    >
+                    <a onClick={() => setOpenAvatarMenu(false)} href="/login">
                       <li className="py-1 color-transition hover:bg-gray-200 p-2 cursor-pointer rounded">
                         Login
                       </li>
-                    </Link>
-                    <Link
+                    </a>
+                    <a
                       onClick={() => setOpenAvatarMenu(false)}
                       href="/register"
                     >
                       <li className="py-1 color-transition hover:bg-gray-200 p-2 cursor-pointer rounded">
                         Register
                       </li>
-                    </Link>
+                    </a>
                   </>
                 )}
               </ul>
@@ -127,7 +120,7 @@ const NavBar = () => {
 
         <ul>
           {navlinks.map((link, index) => (
-            <Link onClick={() => setOpenAvatarMenu(false)} href={link.href}>
+            <a onClick={() => setOpenAvatarMenu(false)} href={link.href}>
               <li
                 key={index}
                 className="px-4 py-2 color-transition hover:bg-gray-200"
@@ -135,7 +128,7 @@ const NavBar = () => {
               >
                 {link.title}
               </li>
-            </Link>
+            </a>
           ))}
           <li className=" cursor-pointer color-transition hover:bg-gray-200">
             <button

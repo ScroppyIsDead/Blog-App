@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.files.base import ContentFile
-from django.core.mail import send_mail
 from django.conf import settings
 # Create your views here.
 def register(request):
@@ -41,8 +40,7 @@ def register(request):
                 return JsonResponse({"message": "Username is too long, maximum length is 24 characters"}, status=400)
             
             user = User.objects.create_user(username=username, password=password1, email=email)
-            email_from = "websitetest0707@gmail.com"
-            send_mail("Thank you for creating an account", "This email has recently been used to create an account on my blog site. If this was not you please contact me at scroppyisdead@gmail.com", email_from, [email])
+            
             return JsonResponse({"message": "Sucessfully created user"}, status=201)
         except json.JSONDecodeError:
             return JsonResponse({"success": False, "message": "Invalid JSON format"}, status=400)
@@ -144,12 +142,7 @@ def change_email(request):
             new_email = data.get("email")
             if new_email.find(" ") != -1:
                 return JsonResponse({"message": "Email can not contain a space"}, status=400)
-            old_email = request.user.email
-            recipient_list = [old_email]
-            new_email_list = [new_email]
-            email_from = "websitetest0707@gmail.com"
-            send_mail("Are you changing your email?", "Your accounts email has recently changed emails, if this was you ignore this message, otherwise please contact support (there is no support because i cant afford it. this is a test website after all, but try contacting me)", email_from, recipient_list)
-            send_mail("Did you add your email to an account?", "This email has recently been added to an account on my test site for making a blog, if this was you, ignore this email, otherwise, please contact support (scroppyisdead@gmail.com)", email_from, new_email_list)
+        
             request.user.email = new_email
             request.user.save()
  
@@ -157,6 +150,17 @@ def change_email(request):
         return JsonResponse({"message": "Error, not logged in"}, status=401)     
     return JsonResponse({"message": "invalid method, must be POST"}, status=401)
 
+def change_password(request):
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            data = json.loads(request.body)
+            new_password = data.get("password")
+            user = request.user
+            user.set_password(new_password)
+            user.save()
+            return JsonResponse({"message": "Correctly changed password"})
+        return JsonResponse({"message": "Error, not logged in"}, status=401)     
+    return JsonResponse({"message": "invalid method, must be POST"}, status=401)
 
 def change_bio(request):
     if request.method == "POST":

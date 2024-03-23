@@ -17,3 +17,4 @@ export const CHANGE_BIO = "http://localhost:8000/user/changebio";
 export const UPLOAD_AVATAR = "http://localhost:8000/user/uploadavatar";
 export const GET_OWN_AVATAR = "http://localhost:8000/user/getownavatar";
 export const CHANGE_EMAIL = "http://localhost:8000/user/changeemail";
+export const CHANGE_PASSWORD = "http://localhost:8000/user/changepassword";

@@ -13,5 +13,6 @@ urlpatterns = [
  path("changebio", views.change_bio),
  path("uploadavatar", views.upload_avatar),
  path("getownavatar", views.get_own_avatar),
- path("changeemail", views.change_email)
+ path("changeemail", views.change_email),
+ path("changepassword", views.change_password),
 ]
